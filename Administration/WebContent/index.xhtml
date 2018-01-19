@@ -19,11 +19,11 @@
 
 		<p>
 			<h:outputLabel value="Mot de passe : " />
-			<h:inputText id="motDePasse" label="Mot de passe" value="#{administration.motDePasse}"
-				required="true" type="PASSWORD">
+			<h:inputSecret id="motDePasse" label="Mot de passe" value="#{administration.motDePasse}"
+				required="true">
 				<f:validator validatorId="motDePasseValidator" />
 				<f:attribute name="attributNom" value="#{nomBinding}" />
-			</h:inputText>
+			</h:inputSecret>
 			<h:message for="motDePasse" />
 		</p>
 

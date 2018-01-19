@@ -4,16 +4,23 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @ManagedBean
 @RequestScoped
+@Entity
+@Table(name = "Administration")
 public class Administration implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String nom;
 
 	private String motDePasse;
+	
 	
 	public String getNom() {
 		return nom;

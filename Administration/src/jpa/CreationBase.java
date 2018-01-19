@@ -6,12 +6,13 @@ import java.sql.Statement;
 
 public class CreationBase {
 
-	/*
+
 	public final static String[] QUERIES = {
 			"drop table Administration if exists",
-			"create table Administration (id bigint not null, nom varchar(255), motDePasse varchar(255), primary key (id))"
+			"create table Administration (nom varchar(255) not null, motDePasse varchar(255), primary key (nom))",
+			"INSERT INTO Administration VALUES('Seb','toto')"
 	};
-	*/
+
 
 	public static void main(String[] args) throws Exception {
 		 
@@ -23,22 +24,11 @@ public class CreationBase {
 		Connection connexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/baseAdministration", "sa",  "");
 		
 		Statement instructionSQL = connexion.createStatement();
-		
-		
-		String sql = "create table Administration (id bigint not null, nom varchar(255), motDePasse varchar(255), primary key (id))";
-		instructionSQL.executeUpdate(sql);
-		
-		
-		
-		sql = "INSERT INTO Administration VALUES('1','Seb','toto')";
-		instructionSQL.executeUpdate(sql);
 
-		/*
 		for (String query : QUERIES) {
 			System.out.println(query);
 			instructionSQL.executeUpdate(query);
 		}
-		*/
 
 		instructionSQL.close();
 		connexion.close();

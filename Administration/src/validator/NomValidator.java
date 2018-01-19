@@ -12,12 +12,9 @@ public class NomValidator implements Validator {
 
 	public void validate(FacesContext contexte, UIComponent composant, Object nom) throws ValidatorException {
 		System.out.println(" >>> Classe NomValidator : procédure validate() = " + nom);
-		
-		
-		/*
+
 		if (nom.toString().length() < 2) {
-			throw new ValidatorException(new FacesMessage("Le nom doit contenir au moins deux caractères."));
+			throw new ValidatorException(new FacesMessage(" Le nom utilisateur doit contenir au moins deux caractères."));
 		}
-		*/
 	}
 }
