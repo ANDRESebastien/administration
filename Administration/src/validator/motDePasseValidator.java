@@ -1,5 +1,12 @@
 package validator;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -23,48 +30,57 @@ public class motDePasseValidator implements Validator {
 					new FacesMessage("Le nom utilisateur et le mot de passe doivent être différent."));
 
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
-		} 
-		
-		/*
-		
-		else { // nom différent, le nom est il présent en base ?
-
+		} else { // nom différent, le nom est il présent en base ?
 
 			System.out.println(" >>> Classe NomPrenomValidator : procédure validate() = nom différent ");
 
-			SessionFactory sessionFactory = null;
-			Session session = null;
+			Connection connexion = null;
+			PreparedStatement instructionSQL = null;
 
 			try {
-				sessionFactory = new Configuration().configure("/ressource/hibernate.cfg.xml").buildSessionFactory();
-				session = sessionFactory.openSession();
-				
-				
-				System.out.println("avant load");
-				
-				AdministrationBean administration = session.load(AdministrationBean.class, nom);
+				Class.forName("org.hsqldb.jdbcDriver").getConstructor().newInstance();
+				try {
+					// java -cp hsqldb.jar org.hsqldb.server.Server --database.0
+					// file:C:/git/Administration/Administration/data/baseAdministration --dbname.0
+					// baseAdministration
 
-				System.out.println(administration.getNom() + " " + administration.getMotDePasse());
+					connexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/baseAdministration",
+							"sa", "");
 
-				if (administration != null) {
-					System.out.println(
-							" >>> Classe NomPrenomValidator : procédure validate() = Le nom utilisateur est déjà présent en base");
-					javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
-							new FacesMessage("Le nom utilisateur est déjà présent en base."));
+					String sql = "SELECT * FROM ADMINISTRATION WHERE nom = ? ";
+					instructionSQL = connexion.prepareStatement(sql);
 
-					throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
-				} else {
-					System.out.println(
-							" >>> Classe NomPrenomValidator : procédure validate() = nom utilisateur n'est pas présent en base");
+					instructionSQL.setString(1, nom);
+
+					ResultSet result = instructionSQL.executeQuery();
+					String nomBDD = null;
+
+					while (result.next()) {
+						nomBDD = result.getString("nom");
+						System.out.println("trouvé = " + nomBDD);
+					}
+
+					if (nom.equals(nomBDD)) {
+						System.out.println("Le nom utilisateur est déjà présent en BDD");
+						javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
+								new FacesMessage("Le nom utilisateur est déjà présent en BDD."));
+
+						throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
+					}
+
+					instructionSQL.close();
+					connexion.close();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (HibernateException e) {
+
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException
+					| ClassNotFoundException e) {
 				e.printStackTrace();
-			} finally {
-				session.close();
-				sessionFactory.close();
 			}
+
 		}
-		
-		*/
 	}
 }

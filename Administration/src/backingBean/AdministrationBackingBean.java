@@ -28,7 +28,15 @@ public class AdministrationBackingBean implements Serializable  {
 	}
 
 	public String aiguillage() {
+		
+		
+		
+		
+		
 		System.out.println(this.administrationBean.getNom());
+		
+		
+		
 		return "acceuil";
 	}
 }
