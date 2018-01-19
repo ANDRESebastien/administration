@@ -7,7 +7,7 @@ import javax.faces.bean.RequestScoped;
 
 @ManagedBean
 @RequestScoped
-public class Administraction implements Serializable {
+public class Administration implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
