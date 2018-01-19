@@ -14,8 +14,8 @@ public class CreationBase {
 	*/
 
 	public static void main(String[] args) throws Exception {
-		
-		System.out.println("debut");
+		 
+		System.out.println(" -> debut CreationBase");
 
 		Class.forName("org.hsqldb.jdbcDriver").getConstructor().newInstance();
 		//  java -cp hsqldb.jar org.hsqldb.server.Server --database.0 file:C:/git/Administration/Administration/data/baseAdministration --dbname.0 baseAdministration
@@ -26,6 +26,11 @@ public class CreationBase {
 		
 		
 		String sql = "create table Administration (id bigint not null, nom varchar(255), motDePasse varchar(255), primary key (id))";
+		instructionSQL.executeUpdate(sql);
+		
+		
+		
+		sql = "INSERT INTO Administration VALUES('1','Seb','toto')";
 		instructionSQL.executeUpdate(sql);
 
 		/*

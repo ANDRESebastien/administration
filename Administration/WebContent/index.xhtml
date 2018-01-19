@@ -20,7 +20,7 @@
 		<p>
 			<h:outputLabel value="Mot de passe : " />
 			<h:inputText id="motDePasse" label="Mot de passe" value="#{administration.motDePasse}"
-				required="true">
+				required="true" type="PASSWORD">
 				<f:validator validatorId="motDePasseValidator" />
 				<f:attribute name="attributNom" value="#{nomBinding}" />
 			</h:inputText>

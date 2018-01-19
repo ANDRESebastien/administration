@@ -23,11 +23,11 @@ public class Administration implements Serializable {
 		this.nom = nom;
 	}
 
-	public String getPrenom() {
+	public String getMotDePasse() {
 		return motDePasse;
 	}
 
-	public void setPrenom(String prenom) {
+	public void setMotDePasse(String prenom) {
 		this.motDePasse = prenom;
 	}
 }
