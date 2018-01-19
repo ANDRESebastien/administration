@@ -7,14 +7,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import javax.transaction.Transaction;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import bean.Administration;
 
 @FacesValidator
 public class motDePasseValidator implements Validator {
@@ -27,11 +19,16 @@ public class motDePasseValidator implements Validator {
 		System.out.println(" >>> Classe motDePasseValidator : procédure validate() = " + nom + " " + motDePasse);
 
 		if (motDePasse.equals(nom)) {
-			javax.faces.context.FacesContext.getCurrentInstance().addMessage("form:global",
+			javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
 					new FacesMessage("Le nom utilisateur et le mot de passe doivent être différent."));
 
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
-		} else { // nom différent, le nom est il présent en base ?
+		} 
+		
+		/*
+		
+		else { // nom différent, le nom est il présent en base ?
+
 
 			System.out.println(" >>> Classe NomPrenomValidator : procédure validate() = nom différent ");
 
@@ -39,18 +36,20 @@ public class motDePasseValidator implements Validator {
 			Session session = null;
 
 			try {
-
 				sessionFactory = new Configuration().configure("/ressource/hibernate.cfg.xml").buildSessionFactory();
 				session = sessionFactory.openSession();
-
-				Administration administration = session.load(Administration.class, nom);
+				
+				
+				System.out.println("avant load");
+				
+				AdministrationBean administration = session.load(AdministrationBean.class, nom);
 
 				System.out.println(administration.getNom() + " " + administration.getMotDePasse());
 
 				if (administration != null) {
 					System.out.println(
 							" >>> Classe NomPrenomValidator : procédure validate() = Le nom utilisateur est déjà présent en base");
-					javax.faces.context.FacesContext.getCurrentInstance().addMessage("form:global",
+					javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
 							new FacesMessage("Le nom utilisateur est déjà présent en base."));
 
 					throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
@@ -65,5 +64,7 @@ public class motDePasseValidator implements Validator {
 				sessionFactory.close();
 			}
 		}
+		
+		*/
 	}
 }

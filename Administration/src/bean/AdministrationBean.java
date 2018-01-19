@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @RequestScoped
 @Entity
 @Table(name = "Administration")
-public class Administration implements Serializable {
+public class AdministrationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

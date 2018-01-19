@@ -7,10 +7,10 @@
 </h:head>
 <h:body>
 	<h1>Administration</h1>
-	<h:form id="form">
+	<h:form id="administrationForm">
 		<p>
 			<h:outputLabel value="Nom utilisateur : " />
-			<h:inputText id="nom" label="nom" value="#{administration.nom}"
+			<h:inputText id="nom" label="nom" value="#{administrationBackingBean.administrationBean.nom}"
 				required="true" binding="#{nomBinding}">
 				<f:validator validatorId="nomValidator" />
 			</h:inputText>
@@ -19,7 +19,7 @@
 
 		<p>
 			<h:outputLabel value="Mot de passe : " />
-			<h:inputSecret id="motDePasse" label="Mot de passe" value="#{administration.motDePasse}"
+			<h:inputSecret id="motDePasse" label="Mot de passe" value="#{administrationBackingBean.administrationBean.motDePasse}"
 				required="true">
 				<f:validator validatorId="motDePasseValidator" />
 				<f:attribute name="attributNom" value="#{nomBinding}" />
@@ -33,7 +33,7 @@
 
 		<p>
 			<h:commandButton id="valider" label="boutton valider" value="Valider"
-				action="acceuil">
+				action="#{administrationBackingBean.aiguillage()}">
 			</h:commandButton>
 		</p>
 	</h:form>
