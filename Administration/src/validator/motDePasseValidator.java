@@ -33,54 +33,37 @@ public class motDePasseValidator implements Validator {
 		} else { // nom différent, le nom est il présent en base ?
 
 			System.out.println(" >>> Classe NomPrenomValidator : procédure validate() = nom différent ");
-
-			Connection connexion = null;
-			PreparedStatement instructionSQL = null;
-
 			try {
 				Class.forName("org.hsqldb.jdbcDriver").getConstructor().newInstance();
-				try {
-					// java -cp hsqldb.jar org.hsqldb.server.Server --database.0
-					// file:C:/git/Administration/Administration/data/baseAdministration --dbname.0
-					// baseAdministration
+				// java -cp hsqldb.jar org.hsqldb.server.Server --database.0
+				// file:C:/git/Administration/Administration/data/baseAdministration --dbname.0
+				// baseAdministration
 
-					connexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/baseAdministration",
-							"sa", "");
+				
+				
+				Connection connexion = DriverManager
+						.getConnection("jdbc:hsqldb:/data/baseAdministration", "sa", "");
 
-					String sql = "SELECT * FROM ADMINISTRATION WHERE nom = ? ";
-					instructionSQL = connexion.prepareStatement(sql);
+				String sql = "SELECT nom FROM ADMINISTRATION WHERE nom = ? ";
 
-					instructionSQL.setString(1, nom);
+				PreparedStatement instructionSQL = connexion.prepareStatement(sql);
+				instructionSQL.setString(1, nom);
+				ResultSet result = instructionSQL.executeQuery();
 
-					ResultSet result = instructionSQL.executeQuery();
-					String nomBDD = null;
-
-					while (result.next()) {
-						nomBDD = result.getString("nom");
-						System.out.println("trouvé = " + nomBDD);
-					}
-
-					if (nom.equals(nomBDD)) {
-						System.out.println("Le nom utilisateur est déjà présent en BDD");
-						javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
-								new FacesMessage("Le nom utilisateur est déjà présent en BDD."));
-
-						throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
-					}
-
-					instructionSQL.close();
-					connexion.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
+				String nomBDD = "";
+				while (result.next()) {
+					nomBDD = result.getString("nom");
+					System.out.println("trouvé = " + nomBDD);
 				}
+				
+				System.out.println("Fin BDD " + nomBDD);
 
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException
-					| ClassNotFoundException e) {
+				instructionSQL.close();
+				connexion.close();
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 }
