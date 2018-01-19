@@ -42,7 +42,7 @@ public class motDePasseValidator implements Validator {
 				
 				
 				Connection connexion = DriverManager
-						.getConnection("jdbc:hsqldb:/data/baseAdministration", "sa", "");
+						.getConnection("jdbc:hsqldb:file:C:/git/Administration/Administration/data/baseAdministration", "sa", "");
 
 				String sql = "SELECT nom FROM ADMINISTRATION WHERE nom = ? ";
 

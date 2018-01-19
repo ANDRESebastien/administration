@@ -18,7 +18,7 @@ public class test {
 			// file:C:/git/Administration/Administration/data/baseAdministration --dbname.0
 			// baseAdministration
 
-			Connection connexion = DriverManager.getConnection("jdbc:hsqldb:data/baseAdministration",
+			Connection connexion = DriverManager.getConnection("jdbc:hsqldb:file:C:/git/Administration/Administration/data/baseAdministration",
 					"sa", "");
 			
 			String sql = "SELECT nom FROM ADMINISTRATION WHERE nom = ? ";
