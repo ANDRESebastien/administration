@@ -1,11 +1,9 @@
 package validator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -33,16 +31,13 @@ public class motDePasseValidator implements Validator {
 		} else { // nom différent, le nom est il présent en base ?
 
 			System.out.println(" >>> Classe NomPrenomValidator : procédure validate() = nom différent ");
+			String nomBDD = "";
 			try {
 				Class.forName("org.hsqldb.jdbcDriver").getConstructor().newInstance();
-				// java -cp hsqldb.jar org.hsqldb.server.Server --database.0
-				// file:C:/git/Administration/Administration/data/baseAdministration --dbname.0
-				// baseAdministration
 
-				
-				
-				Connection connexion = DriverManager
-						.getConnection("jdbc:hsqldb:file:C:/git/Administration/Administration/data/baseAdministration", "sa", "");
+				Connection connexion = DriverManager.getConnection(
+						"jdbc:hsqldb:file:C:/workspace/administration/Administration/data/baseAdministration", "sa",
+						"");
 
 				String sql = "SELECT nom FROM ADMINISTRATION WHERE nom = ? ";
 
@@ -50,19 +45,23 @@ public class motDePasseValidator implements Validator {
 				instructionSQL.setString(1, nom);
 				ResultSet result = instructionSQL.executeQuery();
 
-				String nomBDD = "";
 				while (result.next()) {
 					nomBDD = result.getString("nom");
 					System.out.println("trouvé = " + nomBDD);
 				}
-				
-				System.out.println("Fin BDD " + nomBDD);
 
 				instructionSQL.close();
 				connexion.close();
-
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			System.out.println("Fin BDD " + nomBDD);
+
+			if (nom.equals(nomBDD)) {
+				javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
+						new FacesMessage("Le nom utilisateur est déjà présent en base."));
+
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
 			}
 		}
 	}
