@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,9 +16,13 @@ public class AdministrationEntity implements Serializable {
 	@Id
 	private String nom;
 
+	@Column
 	private String motDePasse;
-	
-	
+
+	public String toString() {
+		return nom + motDePasse;
+	}
+
 	public String getNom() {
 		return this.nom;
 	}

@@ -24,7 +24,7 @@ public class CreationBase {
 		//  java -cp hsqldb.jar org.hsqldb.server.Server --database.0 file:C:/git/Administration/Administration/data/baseAdministration --dbname.0 baseAdministration
 		
 		//Connection connexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:9001/baseAdministration", "sa",  "");
-		Connection connexion = DriverManager.getConnection("jdbc:hsqldb:file:C:/workspace/administration/Administration/data/baseAdministration", "sa",  "");
+		Connection connexion = DriverManager.getConnection("jdbc:hsqldb:file:data/baseAdministration", "sa",  "");
 		
 		Statement instructionSQL = connexion.createStatement();
 

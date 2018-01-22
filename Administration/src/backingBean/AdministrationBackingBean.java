@@ -1,12 +1,13 @@
 package backingBean;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.validator.ValidatorException;
 
 import bean.AdministrationBean;
 import dao.AdministrationDao;
@@ -14,21 +15,21 @@ import entity.AdministrationEntity;
 
 @ManagedBean
 @RequestScoped
-public class AdministrationBackingBean implements Serializable  {
-	
+public class AdministrationBackingBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private AdministrationBean administrationBean;
 	private AdministrationEntity administrationEntity;
-	
-    @EJB
-    private AdministrationDao administrationDao;
-	
+
+	@EJB
+	private AdministrationDao administrationDao;
+
 	public AdministrationBackingBean() {
 		this.administrationBean = new AdministrationBean();
 		this.administrationEntity = new AdministrationEntity();
 	}
-	
+
 	public AdministrationBean getAdministrationBean() {
 		return administrationBean;
 	}
@@ -37,12 +38,33 @@ public class AdministrationBackingBean implements Serializable  {
 		this.administrationBean = administrationBean;
 	}
 
-	public String aiguillage() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, SQLException {
+	public String delete(String nom) {
+		this.administrationDao.delete(nom);
+		return "listenom";
+	}
+	
+	public String aiguillage() {
+		String action = "";
 		this.administrationEntity.setNom(this.administrationBean.getNom());
 		this.administrationEntity.setMotDePasse(this.administrationBean.getMotDePasse());
-		administrationDao.insert(this.administrationEntity);
-		//System.out.println(this.administrationBean.getNom());
-		return "acceuil";
+
+		System.out.println(" Séléction sur le nom = " + this.administrationBean.getNom());
+		AdministrationEntity resultat = this.administrationDao.select(this.administrationBean.getNom());
+		System.out.println(" resultat = " + resultat);
+
+		if (resultat != null) {
+			javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
+					new FacesMessage("Le nom utilisateur est déjà présent en base."));
+			action = "index";
+		} else {
+			this.administrationDao.insert(this.administrationEntity);
+			action = "listenom";
+		}
+		return action;
+	}
+
+	public List<AdministrationEntity> listeNom() {
+		return administrationDao.listeNom();
 	}
 
 	public AdministrationEntity getAdministrationEntity() {

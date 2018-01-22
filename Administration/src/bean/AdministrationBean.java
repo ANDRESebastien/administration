@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
 @ManagedBean
 @RequestScoped
 public class AdministrationBean implements Serializable {

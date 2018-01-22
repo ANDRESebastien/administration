@@ -1,41 +1,46 @@
 package dao;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import javax.persistence.TypedQuery;
 
 import entity.AdministrationEntity;
 
-@Transactional
 @Stateless
 public class AdministrationDao {
 
-	@PersistenceContext(unitName = "persistenceAdministration")
+	@PersistenceContext(unitName = "persistence-unit-h2")
 	private EntityManager em;
 
-	public void insert(AdministrationEntity administration) throws SQLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
+	public void insert(AdministrationEntity administration) {
+		em.persist(administration);
+	}
 
-		Class.forName("org.hsqldb.jdbcDriver").getConstructor().newInstance();
-		Connection connexion = DriverManager.getConnection("jdbc:hsqldb:file:C:/workspace/administration/Administration/data/baseAdministration",
-				"sa", "");
-	
-		String sql = "INSERT INTO ADMINISTRATION VALUES (?,?)";
-		PreparedStatement instructionSQL = connexion.prepareStatement(sql);
-		instructionSQL.setString(1, administration.getNom());
-		instructionSQL.setString(2, administration.getMotDePasse());
-		
-		int nombreInsertion  = instructionSQL.executeUpdate();
-		instructionSQL.close();
-		connexion.close();
+	public AdministrationEntity select(String nom) {
+		try {
+			TypedQuery<AdministrationEntity> query = em
+					.createQuery("SELECT a FROM AdministrationEntity a WHERE a.nom = ?1", AdministrationEntity.class);
 
-		//em.persist(administration);
+			AdministrationEntity administrationEntity = query.setParameter(1, nom).getSingleResult();
+			if (administrationEntity != null) {
+				System.out.println("AdministrationDao:select: On a trouvé le nom " + administrationEntity.getNom());
+			}
+			return administrationEntity;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public List<AdministrationEntity> listeNom() {
+		return em.createQuery("select a from AdministrationEntity a").getResultList();
+	}
+
+	public void delete(String nom) {
+		AdministrationEntity administrationEntity = em.find(AdministrationEntity.class, nom);
+		em.remove(administrationEntity);
+
 	}
 }
