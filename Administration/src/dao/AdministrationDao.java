@@ -33,6 +33,10 @@ public class AdministrationDao {
 			return null;
 		}
 	}
+	
+	public AdministrationEntity find(String nom) {
+		return em.find(AdministrationEntity.class, nom);
+	}
 
 	public List<AdministrationEntity> listeNom() {
 		return em.createQuery("select a from AdministrationEntity a").getResultList();
@@ -41,6 +45,5 @@ public class AdministrationDao {
 	public void delete(String nom) {
 		AdministrationEntity administrationEntity = em.find(AdministrationEntity.class, nom);
 		em.remove(administrationEntity);
-
 	}
 }

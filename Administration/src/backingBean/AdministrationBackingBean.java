@@ -7,7 +7,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.validator.ValidatorException;
 
 import bean.AdministrationBean;
 import dao.AdministrationDao;
@@ -49,12 +48,13 @@ public class AdministrationBackingBean implements Serializable {
 		this.administrationEntity.setMotDePasse(this.administrationBean.getMotDePasse());
 
 		System.out.println(" Séléction sur le nom = " + this.administrationBean.getNom());
-		AdministrationEntity resultat = this.administrationDao.select(this.administrationBean.getNom());
+		//AdministrationEntity resultat = this.administrationDao.select(this.administrationBean.getNom());
+		AdministrationEntity resultat = this.administrationDao.find(this.administrationBean.getNom());
 		System.out.println(" resultat = " + resultat);
 
 		if (resultat != null) {
-			javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
-					new FacesMessage("Le nom utilisateur est déjà présent en base."));
+			javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:nom",
+					new FacesMessage(" Le nom utilisateur est déjà présent en base."));
 			action = "index";
 		} else {
 			this.administrationDao.insert(this.administrationEntity);

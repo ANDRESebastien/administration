@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class testH2 {
+public class TestH2 {
 
 	public static void main(String[] args) throws Exception {
 
