@@ -41,14 +41,13 @@ public class AdministrationBackingBean implements Serializable {
 		this.administrationDao.delete(nom);
 		return "listenom";
 	}
-	
+
 	public String aiguillage() {
 		String action = "";
 		this.administrationEntity.setNom(this.administrationBean.getNom());
 		this.administrationEntity.setMotDePasse(this.administrationBean.getMotDePasse());
 
-		System.out.println(" Séléction sur le nom = " + this.administrationBean.getNom());
-		//AdministrationEntity resultat = this.administrationDao.select(this.administrationBean.getNom());
+		
 		AdministrationEntity resultat = this.administrationDao.find(this.administrationBean.getNom());
 		System.out.println(" resultat = " + resultat);
 
@@ -61,6 +60,35 @@ public class AdministrationBackingBean implements Serializable {
 			action = "listenom";
 		}
 		return action;
+	}
+
+	public String prepareConnexion(String nom) {
+		this.administrationBean.setNom(nom);
+		return "index";
+	}
+	
+	
+	public String connexion() {
+		String action = "";
+		System.out.println("AdministrationBackingBean:connexion: Bean => nom = " + this.administrationBean.getNom()    + " mdp = " + this.administrationBean.getMotDePasse() );
+
+		AdministrationEntity resultat = this.administrationDao.find(this.administrationBean.getNom());
+
+		if (resultat != null &&  this.administrationBean.getNom().equals(resultat.getNom()) &&  this.administrationBean.getMotDePasse().equals(resultat.getMotDePasse())) {
+				action = "acceuil";
+			} else {
+				javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
+						new FacesMessage(" Le nom utilisateur et/ou mot de passe éronné."));
+				action = "index";
+			}
+		return action;
+	}
+	
+	public void changerMotDePasse() {
+		this.administrationEntity.setNom(this.administrationBean.getNom());
+		this.administrationEntity.setMotDePasse(this.administrationBean.getMotDePasse());
+		
+		this.administrationDao.update(this.administrationEntity);
 	}
 
 	public List<AdministrationEntity> listeNom() {

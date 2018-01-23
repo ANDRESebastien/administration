@@ -38,11 +38,17 @@
 				action="#{administrationBackingBean.aiguillage()}">
 			</h:commandButton>
 
+			<h:column>
+				<h:commandButton id="connexion" label="bouton connexion"
+					value="Connexion"
+					action="#{administrationBackingBean.connexion()}" />
+			</h:column>
+
 		</p>
 	</h:form>
 	<h:form>
-	<h:commandButton id="boutonliste" label="bouton listenom"
-		value="Liste" action="listenom" />
+		<h:commandButton id="boutonliste" label="bouton listenom"
+			value="Liste" action="listenom" />
 	</h:form>
 </h:body>
 </html>

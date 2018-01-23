@@ -16,12 +16,12 @@ public class AdministrationDao {
 	private EntityManager em;
 
 	public void insert(AdministrationEntity administration) {
-		em.persist(administration);
+		this.em.persist(administration);
 	}
 
 	public AdministrationEntity select(String nom) {
 		try {
-			TypedQuery<AdministrationEntity> query = em
+			TypedQuery<AdministrationEntity> query = this.em
 					.createQuery("SELECT a FROM AdministrationEntity a WHERE a.nom = ?1", AdministrationEntity.class);
 
 			AdministrationEntity administrationEntity = query.setParameter(1, nom).getSingleResult();
@@ -33,17 +33,31 @@ public class AdministrationDao {
 			return null;
 		}
 	}
-	
+
 	public AdministrationEntity find(String nom) {
-		return em.find(AdministrationEntity.class, nom);
+		return this.em.find(AdministrationEntity.class, nom);
 	}
 
 	public List<AdministrationEntity> listeNom() {
-		return em.createQuery("select a from AdministrationEntity a").getResultList();
+		return this.em.createQuery("select a from AdministrationEntity a").getResultList();
 	}
 
-	public void delete(String nom) {
-		AdministrationEntity administrationEntity = em.find(AdministrationEntity.class, nom);
-		em.remove(administrationEntity);
+	public AdministrationEntity update(AdministrationEntity administrationEntity) {
+		administrationEntity = this.find(administrationEntity.getNom());
+		if (administrationEntity != null) {
+			return this.em.merge(administrationEntity);
+		} else {
+			return null;
+		}
+	}
+
+	public String delete(String nom) {
+		AdministrationEntity administrationEntity = this.find(nom);
+		if (administrationEntity != null) {
+			this.em.remove(administrationEntity);
+			return "Ok";
+		} else {
+			return "nom non trouvé";
+		}
 	}
 }

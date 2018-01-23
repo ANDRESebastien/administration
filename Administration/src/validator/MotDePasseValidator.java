@@ -13,20 +13,22 @@ public class MotDePasseValidator implements Validator {
 
 	public void validate(FacesContext contexte, UIComponent composant, Object oMotDePasse) throws ValidatorException {
 
-		UIInput nomUIInput = (UIInput) composant.getAttributes().get("attributNom");
-		String nom = (String) nomUIInput.getValue();
-		
 		String motDePasse = (String) oMotDePasse;
-		
+
 		if (motDePasse.length() < 2) {
 			throw new ValidatorException(new FacesMessage(" Le mot de passe doit contenir au moins deux caractères."));
 		}
 
-		if (motDePasse.equals(nom)) {
-			javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
-					new FacesMessage(" Le nom utilisateur et le mot de passe doivent être différent."));
+		UIInput nomUIInput = (UIInput) composant.getAttributes().get("attributNom");
+		if (nomUIInput != null) {
+			String nom = (String) nomUIInput.getValue();
 
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
+			if (motDePasse.equals(nom)) {
+				javax.faces.context.FacesContext.getCurrentInstance().addMessage("administrationForm:global",
+						new FacesMessage(" Le nom utilisateur et le mot de passe doivent être différent."));
+
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, null));
+			}
 		}
 	}
 }

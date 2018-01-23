@@ -12,6 +12,7 @@
 	<h:dataTable value="#{administrationBackingBean.listeNom()}" var="table">
 		<h:column>#{table.nom}</h:column>
 		<h:column><h:commandButton value="Supprimer" action="#{administrationBackingBean.delete(table.nom)}" /></h:column>
+		<h:column><h:commandButton value="Connexion" action="#{administrationBackingBean.prepareConnexion(table.nom)}" /></h:column>
 	</h:dataTable>
 	<h:commandButton value="Retour" action="index" />
 	</h:form>

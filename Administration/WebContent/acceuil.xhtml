@@ -6,7 +6,27 @@
 	<title>Début Application</title>
 </h:head>
 <h:body>
-	<h1>Début Application</h1>
-Bonjour #{administrationBackingBean.administrationBean.nom}
+	<h:form>
+		<h1>Début Application</h1>
+
+		<h:outputLabel>Bonjour #{administrationBackingBean.administrationBean.nom}</h:outputLabel>
+		<h:inputHidden
+			value="#{administrationBackingBean.administrationBean.nom}" />
+		<p>
+			<h:outputLabel value="Mot de passe : " />
+			<h:inputSecret id="motDePasse" label="Mot de passe"
+				value="#{administrationBackingBean.administrationBean.motDePasse}"
+				required="true">
+				<f:validator validatorId="motDePasseValidator" />
+			</h:inputSecret>
+			<h:message for="motDePasse" />
+			<h:commandButton id="changerMDP" label="bouton changerMDP" value="Changer de Mot de passe"
+				action="#{administrationBackingBean.changerMotDePasse()}" />
+		</p>
+	</h:form>
+	<br />
+	<h:form>
+		<h:commandButton value="Déconnexion" action="index" />
+	</h:form>
 </h:body>
 </html>
