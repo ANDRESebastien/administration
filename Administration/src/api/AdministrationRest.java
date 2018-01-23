@@ -3,11 +3,13 @@ package api;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import dao.AdministrationDao;
 import entity.AdministrationEntity;
@@ -68,5 +70,30 @@ public class AdministrationRest {
 		} else {
 			return "Ko";
 		}
+	}
+	
+	@POST
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String update(AdministrationEntity administrationEntity) {
+		
+		System.out.println("AdministrationRest:update:@ConsumesJson: nom=" + administrationEntity.getNom() + " mdp=" + administrationEntity.getMotDePasse());
+		
+		AdministrationEntity update = this.administrationDao.update(administrationEntity);
+		
+		if (update != null) {
+			System.out.println("update nom ="+ update.getNom() + " mdp=" + update.getMotDePasse());
+			return "Ok";
+		} else {
+			return "Ko";
+		}
+	}
+	
+	@POST
+	@Path("/insert")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String insert(AdministrationEntity administrationEntity) {
+		this.administrationDao.insert(administrationEntity);
+		return "Ok";
 	}
 }

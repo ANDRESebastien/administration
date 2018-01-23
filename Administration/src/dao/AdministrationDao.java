@@ -43,8 +43,7 @@ public class AdministrationDao {
 	}
 
 	public AdministrationEntity update(AdministrationEntity administrationEntity) {
-		administrationEntity = this.find(administrationEntity.getNom());
-		if (administrationEntity != null) {
+		if (this.find(administrationEntity.getNom()) != null) {
 			return this.em.merge(administrationEntity);
 		} else {
 			return null;
